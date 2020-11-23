@@ -1,6 +1,7 @@
 import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { FacebookAuthGuard } from './auth/facebook-auth.guard';
 import { AuthService } from './auth/auth.service';
 
 @Controller()
@@ -15,7 +16,19 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
+  async getProfile(@Request() req) {
     return req.user;
+  }
+
+  @UseGuards(FacebookAuthGuard)
+  @Get('auth/login/facebook')
+  async facebookLogin(@Request() req): Promise<any> {
+    return req.user;
+  }
+
+  @UseGuards(FacebookAuthGuard)
+  @Get("auth/login/facebook/redirect")
+  async facebookLoginRedirect(@Request() req): Promise<any> {
+      return req.user;
   }
 }

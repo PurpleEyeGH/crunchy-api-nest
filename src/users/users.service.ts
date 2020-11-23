@@ -8,9 +8,9 @@ export class UsersService {
     constructor() {
         this.users = [
             {
-                userId: 1,
+                userid: 1,
                 username: 'axoque',
-                email: 'axel@dsqd.fr',
+                email: 'oeilpourpreburger@gmail.com',
                 password: 'aqwzsxed'
             }
         ]

@@ -1,19 +1,24 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-
+import { FacebookStrategy } from "./auth/facebook.strategy";
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(
-      'mongodb+srv://admin:JS0bTFLqYRfAKxIM@cluster0.6o7cj.gcp.mongodb.net/crunchy-db?retryWrites=true&w=majority',
+      process.env.MONGO_DB,
     ),
     AuthModule,
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, FacebookStrategy],
 })
 export class AppModule {}
