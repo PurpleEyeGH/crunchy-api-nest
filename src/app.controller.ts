@@ -3,6 +3,7 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { FacebookAuthGuard } from './auth/facebook-auth.guard';
 import { AuthService } from './auth/auth.service';
+import { GoogleAuthGuard } from './auth/google-auth.guard';
 
 @Controller()
 export class AppController {
@@ -27,8 +28,23 @@ export class AppController {
   }
 
   @UseGuards(FacebookAuthGuard)
-  @Get("auth/login/facebook/redirect")
+  @Get('auth/login/facebook/redirect')
   async facebookLoginRedirect(@Request() req): Promise<any> {
-      return req.user;
+    console.log()
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(GoogleAuthGuard)
+  @Get('auth/login/google')
+  async googleLogin(@Request() req): Promise<any> {
+    console.log(req.user);
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(GoogleAuthGuard)
+  @Get('auth/login/google/redirect')
+  async googleLoginRedirect(@Request() req): Promise<any> {
+    console.log(req.user);
+    return this.authService.login(req.user);
   }
 }

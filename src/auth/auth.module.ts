@@ -4,10 +4,13 @@ import { AuthService } from './auth.service';
 import { LocalStategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { FacebookStrategy } from './facebook.strategy';
+import { GoogleStrategy } from './google.strategy';
 import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { config } from 'dotenv';
+
+config();
 
 @Module({
   imports: [
@@ -18,11 +21,11 @@ import { jwtConstants } from './constants';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  providers: [AuthService, LocalStategy, JwtStrategy, FacebookStrategy],
+  providers: [AuthService, LocalStategy, JwtStrategy, FacebookStrategy, GoogleStrategy],
   exports: [AuthService]
 })
 export class AuthModule {}
