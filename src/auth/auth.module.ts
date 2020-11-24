@@ -1,31 +1,28 @@
+import { AuthController } from './auth.controller';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { AuthService } from './auth.service';
-import { LocalStategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
-import { FacebookStrategy } from './facebook.strategy';
-import { GoogleStrategy } from './google.strategy';
-import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
+import { AuthService } from './auth.service';
+import { LocalStategy } from './local/local.strategy';
+import { JwtStrategy } from './jwt/jwt.strategy';
+import { FacebookStrategy } from './facebook/facebook.strategy';
+import { GoogleStrategy } from './google/google.strategy';
+import { UsersModule } from '../users/users.module';
 
 config();
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: ['.env'],
-      isGlobal: true,
-    }),
     UsersModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '3600s' },
     }),
   ],
   providers: [AuthService, LocalStategy, JwtStrategy, FacebookStrategy, GoogleStrategy],
-  exports: [AuthService]
+  exports: [AuthService],
+  controllers: [AuthController]
 })
 export class AuthModule {}
